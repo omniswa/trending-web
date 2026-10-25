@@ -1,0 +1,84 @@
+[
+  {
+    "id": "1",
+    "title": "The Cartographer's Daughter",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-cartographers-daughter/600/800",
+    "link": "blogs/2026/cartographers-daughter.html"
+  },
+  {
+    "id": "2",
+    "title": "Letters to a Young Botanist",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-letters-botanist/600/800",
+    "link": "blogs/2026/letters-to-a-young-botanist.html"
+  },
+  {
+    "id": "3",
+    "title": "Of Silent Things",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-silent-things/600/800",
+    "link": "blogs/2026/of-silent-things.html"
+  },
+  {
+    "id": "4",
+    "title": "The Year of Long Afternoons",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-long-afternoons/600/800",
+    "link": "blogs/2026/year-of-long-afternoons.html"
+  },
+  {
+    "id": "5",
+    "title": "Anatomy of a Quiet Room",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-quiet-room/600/800",
+    "link": "blogs/2026/anatomy-of-quiet-room.html"
+  },
+  {
+    "id": "6",
+    "title": "The Last Lighthouse Keeper",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-lighthouse-keeper/600/800",
+    "link": "blogs/2026/last-lighthouse-keeper.html"
+  },
+  {
+    "id": "7",
+    "title": "Field Notes from the Edge",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-field-notes-edge/600/800",
+    "link": "blogs/2026/field-notes-from-the-edge.html"
+  },
+  {
+    "id": "8",
+    "title": "The Glasshouse Years",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-glasshouse-years/600/800",
+    "link": "blogs/2026/glasshouse-years.html"
+  },
+  {
+    "id": "9",
+    "title": "Slow Waters",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-slow-water/600/800",
+    "link": "blogs/2026/slow-waters.html"
+  },
+  {
+    "id": "10",
+    "title": "A Pocket Book of Hours",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nunc egestas, convallis mi nec, pretium nisl.",
+    "published": "2026-10-01",
+    "thumbnail": "https://picsum.photos/seed/blog-pocket-hours/600/800",
+    "link": "blogs/2026/pocket-blog-of-hours.html"
+  }
+  
+  
+]

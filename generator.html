@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>3NDING – Blog post generator</title>
+  <!-- Place this file in your project root, next to index.html and style.css -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/generator.css">
+  <script>
+    (function() {
+      try {
+        var s = localStorage.getItem('theme');
+        var d = s ? s === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = d ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="wrap wide bar">
+      <a class="brand" href="./" aria-label="3NDING home">3NDING <span style="font-weight:400;color:var(--muted);font-size:.9rem">generator</span></a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">
+        <svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+        </svg>
+        <svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </svg>
+      </button>
+    </div>
+  </header>
+  
+  <main class="wrap wide">
+    <div class="gen">
+      <section>
+        <h1>Blog post generator</h1>
+        <p style="color:var(--muted);margin:.5rem 0 0">Fill in the details, write in Markdown, then save the finished page and homepage entry for 3nding.top.</p>
+        
+        <div class="panel">
+          <h2>Post details</h2>
+          <div class="f"><label for="title">Title</label><input id="title" maxlength="120" placeholder="The Cartographer’s Daughter"><small id="titleHint"></small></div>
+          <div class="grid2">
+            <div class="f"><label for="slug">URL slug</label><input id="slug" placeholder="cartographers-daughter"><small id="urlHint"></small></div>
+            <div class="f"><label for="date">Published date</label><input id="date" type="date"></div>
+          </div>
+          <div class="f"><label for="desc">Meta description</label><input id="desc" maxlength="200" placeholder="One clear sentence that summarizes the post."><small id="descHint">Aim for 120–160 characters.</small></div>
+          <div class="f"><label for="lede">Intro line under the title (optional)</label><input id="lede" placeholder="Defaults to the meta description"></div>
+          <div class="grid2">
+            <div class="f"><label for="author">Author</label><input id="author" value="3NDING Editorial"></div>
+            <div class="f"><label for="section">Category</label><input id="section" value="Stories"></div>
+          </div>
+          <div class="f"><label for="tags">Tags (comma separated)</label><input id="tags" placeholder="maps, history, travel"></div>
+        </div>
+        
+        <div class="panel">
+          <h2>Images</h2>
+          <div class="f"><label for="image">Hero image URL</label><input id="image" type="url" placeholder="https://picsum.photos/seed/my-post/1200/675"><small>Use a full URL, or a path like /images/post.jpg. Leave empty for no hero image.</small></div>
+          <div class="f"><label for="alt">Image alt text</label><input id="alt" placeholder="Describe what the image shows"></div>
+          <div class="f"><label for="caption">Image caption (optional)</label><input id="caption"></div>
+          <div class="f"><label for="thumb">Homepage thumbnail URL</label><input id="thumb" type="url" placeholder="Defaults to the hero image"></div>
+        </div>
+        
+        <div class="panel">
+          <h2>Body (Markdown)</h2>
+          <div class="f">
+            <label class="sr" for="body">Post body in Markdown</label>
+            <textarea id="body" spellcheck="true"># Start with a strong opening
+
+Open with a paragraph that states the topic in the first sentence. Text can be **bold**, *italic*, ~~removed~~, ==highlighted== or `inline code`. Add a [link](https://3nding.top/) or an [external link](https://developer.mozilla.org/). Press [[Ctrl]] + [[F]] to search.
+
+## A section heading
+
+Use ## for sections and ### for sub-sections. The first-level # is treated as a section too, so a post only ever has one h1 (the title).
+
+- Unordered item
+- Another item
+  - A nested item
+  - Another nested item
+
+1. First step
+2. Second step
+3. Third step
+
+> The map is not the territory, but a good one gets you home.
+> — Sample Author
+
+```js
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
+```
+
+Table: Sample comparison
+| Element | Recommended | Max length |
+|---|---|--:|
+| Title tag | Unique, keyword first | 60 |
+| Meta description | Clear summary | 160 |
+
+---
+
+![A descriptive alt text](https://picsum.photos/seed/inline-demo/1200/675 "Optional caption")
+
+## Wrap-up
+
+Close with a short summary and a next step.</textarea>
+            <small>Supports headings, paragraphs, lists (nested), blockquotes (last line starting with — becomes the source), fenced code, tables (add a “Table: caption” line above), horizontal rules and images.</small>
+          </div>
+          <label class="chk"><input type="checkbox" id="toc" checked> Add a table of contents (needs 2+ sections)</label>
+        </div>
+        
+        <div class="panel">
+          <details>
+            <summary>Previous / next post links (optional)</summary>
+            <div class="grid2">
+              <div class="f"><label for="prevT">Previous title</label><input id="prevT"></div>
+              <div class="f"><label for="prevF">Previous file</label><input id="prevF" placeholder="letters-to-a-young-botanist.html"></div>
+              <div class="f"><label for="nextT">Next title</label><input id="nextT"></div>
+              <div class="f"><label for="nextF">Next file</label><input id="nextF" placeholder="of-silent-things.html"></div>
+            </div>
+          </details>
+        </div>
+        
+        <div class="panel">
+          <h2>Save</h2>
+          <div class="f">
+            <label for="loadJson">Your current blogs.json (so the new post is added to it)</label>
+            <input id="loadJson" type="file" accept=".json,application/json">
+            <small id="jsonInfo">Not loaded. If you skip this, the downloaded blogs.json will contain only the new post.</small>
+          </div>
+          <div class="actions">
+            <button class="btn" id="saveFolder" type="button">Save to project folder</button>
+            <button class="btn alt" id="dlHtml" type="button">Download post HTML</button>
+            <button class="btn alt" id="dlJson" type="button">Download blogs.json</button>
+            <button class="btn alt" id="copyHtml" type="button">Copy HTML</button>
+          </div>
+          <p id="status" role="status"></p>
+          <p style="color:var(--muted);font-size:.85rem;margin:12px 0 0">“Save to project folder” works in Chrome, Edge and other Chromium browsers on desktop. Choose your project root; it writes <code>blogs/YEAR/slug.html</code> and updates <code>blogs.json</code>. Other browsers: use the download buttons.</p>
+        </div>
+      </section>
+      
+      <aside class="preview-col">
+        <h2>Live preview</h2>
+        <iframe id="preview" title="Post preview"></iframe>
+      </aside>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="wrap wide foot">
+      <section>© <span id="year">2026</span> 3NDING</section>
+      <section class="links">Generator for 3nding.top</section>
+    </div>
+  </footer>
+  
+  <script src="js/generator.js"></script>
+</body>
+
+</html>

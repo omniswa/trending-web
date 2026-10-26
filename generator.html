@@ -4,11 +4,159 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Post Generator – 3NDING</title>
   <meta name="robots" content="noindex, nofollow">
-  <title>3NDING – Blog post generator</title>
-  <!-- Place this file in your project root, next to index.html and style.css -->
+  <meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1016" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="css/generator.css">
+  <style>
+    .field {
+      display: grid;
+      gap: 6px
+    }
+    
+    .field>label,
+    .legend {
+      font-weight: 600;
+      font-size: .95rem
+    }
+    
+    .hint {
+      color: var(--muted);
+      font-size: .85rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px
+    }
+    
+    .input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    
+    textarea.input {
+      min-height: 320px;
+      resize: vertical;
+      line-height: 1.55;
+      font: .92rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+    }
+    
+    .input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent)
+    }
+    
+    .input[aria-invalid=true] {
+      border-color: #dc2626
+    }
+    
+    .err {
+      color: #dc2626;
+      font-size: .85rem;
+      min-height: 1.2em;
+      margin: 0
+    }
+    
+    :root[data-theme=dark] .err {
+      color: #f87171
+    }
+    
+    .slug {
+      color: var(--muted);
+      font-size: .85rem;
+      word-break: break-all
+    }
+    
+    .slug code,
+    .out code {
+      font: .88em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: var(--accent-soft);
+      padding: .1em .4em;
+      border-radius: 6px
+    }
+    
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+    
+    .btn {
+      margin-top: 0
+    }
+    
+    .btn.ghost {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border)
+    }
+    
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      filter: none
+    }
+    
+    .out {
+      margin-top: clamp(28px, 5vw, 48px);
+      padding-top: 24px;
+      border-top: 1px solid var(--border)
+    }
+    
+    .out[hidden] {
+      display: none
+    }
+    
+    .out h2 {
+      margin: 0 0 6px;
+      font: 600 1.35rem/1.3 var(--serif)
+    }
+    
+    .out p {
+      color: var(--muted);
+      margin: 0 0 14px;
+      font-size: .95rem
+    }
+    
+    .codebox {
+      position: relative
+    }
+    
+    .codebox pre {
+      margin: 0;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: var(--surface);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      font: .88rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 2
+    }
+    
+    .codebox .btn {
+      margin-top: 12px
+    }
+    
+    .toast {
+      color: var(--accent-2);
+      font-weight: 600;
+      font-size: .9rem;
+      align-self: center;
+      min-height: 1.2em
+    }
+    
+    @media (max-width: 479px) {
+      .actions .btn {
+        flex: 1 1 100%
+      }
+    }
+  </style>
   <script>
     (function() {
       try {
@@ -22,8 +170,20 @@
 
 <body>
   <header class="site-header">
-    <div class="wrap wide bar">
-      <a class="brand" href="./" aria-label="3NDING home">3NDING <span style="font-weight:400;color:var(--muted);font-size:.9rem">generator</span></a>
+    <div class="wrap bar">
+      <a class="brand" href="./" aria-label="3NDING home">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4f46e5" />
+              <stop offset="1" stop-color="#0d9488" />
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="9" fill="url(#g)" />
+          <text x="16" y="23" text-anchor="middle" font-size="28" font-weight="bolder" font-family="Arial, sans-serif" fill="white">&nearr;</text>
+        </svg>
+        3NDING
+      </a>
       <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">
         <svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
@@ -36,129 +196,406 @@
     </div>
   </header>
   
-  <main class="wrap wide">
-    <div class="gen">
-      <section>
-        <h1>Blog post generator</h1>
-        <p style="color:var(--muted);margin:.5rem 0 0">Fill in the details, write in Markdown, then save the finished page and homepage entry for 3nding.top.</p>
-        
-        <div class="panel">
-          <h2>Post details</h2>
-          <div class="f"><label for="title">Title</label><input id="title" maxlength="120" placeholder="The Cartographer’s Daughter"><small id="titleHint"></small></div>
-          <div class="grid2">
-            <div class="f"><label for="slug">URL slug</label><input id="slug" placeholder="cartographers-daughter"><small id="urlHint"></small></div>
-            <div class="f"><label for="date">Published date</label><input id="date" type="date"></div>
-          </div>
-          <div class="f"><label for="desc">Meta description</label><input id="desc" maxlength="200" placeholder="One clear sentence that summarizes the post."><small id="descHint">Aim for 120–160 characters.</small></div>
-          <div class="f"><label for="lede">Intro line under the title (optional)</label><input id="lede" placeholder="Defaults to the meta description"></div>
-          <div class="grid2">
-            <div class="f"><label for="author">Author</label><input id="author" value="3NDING Editorial"></div>
-            <div class="f"><label for="section">Category</label><input id="section" value="Stories"></div>
-          </div>
-          <div class="f"><label for="tags">Tags (comma separated)</label><input id="tags" placeholder="maps, history, travel"></div>
-        </div>
-        
-        <div class="panel">
-          <h2>Images</h2>
-          <div class="f"><label for="image">Hero image URL</label><input id="image" type="url" placeholder="https://picsum.photos/seed/my-post/1200/675"><small>Use a full URL, or a path like /images/post.jpg. Leave empty for no hero image.</small></div>
-          <div class="f"><label for="alt">Image alt text</label><input id="alt" placeholder="Describe what the image shows"></div>
-          <div class="f"><label for="caption">Image caption (optional)</label><input id="caption"></div>
-          <div class="f"><label for="thumb">Homepage thumbnail URL</label><input id="thumb" type="url" placeholder="Defaults to the hero image"></div>
-        </div>
-        
-        <div class="panel">
-          <h2>Body (Markdown)</h2>
-          <div class="f">
-            <label class="sr" for="body">Post body in Markdown</label>
-            <textarea id="body" spellcheck="true"># Start with a strong opening
-
-Open with a paragraph that states the topic in the first sentence. Text can be **bold**, *italic*, ~~removed~~, ==highlighted== or `inline code`. Add a [link](https://3nding.top/) or an [external link](https://developer.mozilla.org/). Press [[Ctrl]] + [[F]] to search.
-
-## A section heading
-
-Use ## for sections and ### for sub-sections. The first-level # is treated as a section too, so a post only ever has one h1 (the title).
-
-- Unordered item
-- Another item
-  - A nested item
-  - Another nested item
-
-1. First step
-2. Second step
-3. Third step
-
-> The map is not the territory, but a good one gets you home.
-> — Sample Author
-
-```js
-function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-}
-```
-
-Table: Sample comparison
-| Element | Recommended | Max length |
-|---|---|--:|
-| Title tag | Unique, keyword first | 60 |
-| Meta description | Clear summary | 160 |
-
----
-
-![A descriptive alt text](https://picsum.photos/seed/inline-demo/1200/675 "Optional caption")
-
-## Wrap-up
-
-Close with a short summary and a next step.</textarea>
-            <small>Supports headings, paragraphs, lists (nested), blockquotes (last line starting with — becomes the source), fenced code, tables (add a “Table: caption” line above), horizontal rules and images.</small>
-          </div>
-          <label class="chk"><input type="checkbox" id="toc" checked> Add a table of contents (needs 2+ sections)</label>
-        </div>
-        
-        <div class="panel">
-          <details>
-            <summary>Previous / next post links (optional)</summary>
-            <div class="grid2">
-              <div class="f"><label for="prevT">Previous title</label><input id="prevT"></div>
-              <div class="f"><label for="prevF">Previous file</label><input id="prevF" placeholder="letters-to-a-young-botanist.html"></div>
-              <div class="f"><label for="nextT">Next title</label><input id="nextT"></div>
-              <div class="f"><label for="nextF">Next file</label><input id="nextF" placeholder="of-silent-things.html"></div>
-            </div>
-          </details>
-        </div>
-        
-        <div class="panel">
-          <h2>Save</h2>
-          <div class="f">
-            <label for="loadJson">Your current blogs.json (so the new post is added to it)</label>
-            <input id="loadJson" type="file" accept=".json,application/json">
-            <small id="jsonInfo">Not loaded. If you skip this, the downloaded blogs.json will contain only the new post.</small>
-          </div>
-          <div class="actions">
-            <button class="btn" id="saveFolder" type="button">Save to project folder</button>
-            <button class="btn alt" id="dlHtml" type="button">Download post HTML</button>
-            <button class="btn alt" id="dlJson" type="button">Download blogs.json</button>
-            <button class="btn alt" id="copyHtml" type="button">Copy HTML</button>
-          </div>
-          <p id="status" role="status"></p>
-          <p style="color:var(--muted);font-size:.85rem;margin:12px 0 0">“Save to project folder” works in Chrome, Edge and other Chromium browsers on desktop. Choose your project root; it writes <code>blogs/YEAR/slug.html</code> and updates <code>blogs.json</code>. Other browsers: use the download buttons.</p>
-        </div>
-      </section>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Post generator</h1>
+      <p>Write then download a ready-to-publish blog.</p>
+    </section>
+    
+    <form class="gen" id="form" novalidate>
+      <div class="field">
+        <label for="title">Title</label>
+        <input class="input" id="title" type="text" maxlength="120" autocomplete="off" aria-describedby="titleErr slug">
+        <p class="slug">File: <code id="slug">—</code></p>
+        <p class="err" id="titleErr" role="alert"></p>
+      </div>
       
-      <aside class="preview-col">
-        <h2>Live preview</h2>
-        <iframe id="preview" title="Post preview"></iframe>
-      </aside>
-    </div>
+      <div class="field">
+        <label for="desc">Meta description</label>
+        <textarea class="input" id="desc" rows="3" maxlength="200" style="min-height:0" aria-describedby="descHint descErr"></textarea>
+        <div class="hint" id="descHint"><span>Aim for 150–160 characters.</span><span id="descCount">0 / 160</span></div>
+        <p class="err" id="descErr" role="alert"></p>
+      </div>
+      
+      <div class="field">
+        <label for="content">Content (Markdown)</label>
+        <textarea class="input" id="content" spellcheck="true" aria-describedby="contentErr" placeholder="## A heading&#10;&#10;Write your post here…"></textarea>
+        <p class="err" id="contentErr" role="alert"></p>
+      </div>
+      
+      <div class="actions">
+        <button class="btn" type="submit">Generate &amp; download</button>
+        <button class="btn ghost" id="clearForm" type="button">Clear form</button>
+      </div>
+    </form>
+    
+    <section class="out" id="out" hidden aria-labelledby="outTitle">
+      <h2 id="outTitle">Post entry</h2>
+      <p>Copy this into your posts list. File saved as <code id="outFile"></code>.</p>
+      <div class="codebox">
+        <pre><code id="json"></code></pre>
+        <div class="actions">
+          <button class="btn" id="copy" type="button">Copy</button>
+          <span class="toast" id="toast" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
   </main>
   
   <footer>
-    <div class="wrap wide foot">
-      <section>© <span id="year">2026</span> 3NDING</section>
-      <section class="links">Generator for 3nding.top</section>
+    <div class="wrap foot">
+      <section>© <span id="year">2026</span> 3NDING </section>
+      <section class="links"><a href="#">About</a> | <a href="#">Terms</a> | <a href="#">Privacy</a></section>
     </div>
   </footer>
   
-  <script src="js/generator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const $ = id => document.getElementById(id);
+      const f = { title: $('title'), desc: $('desc'), content: $('content') };
+      const root = document.documentElement;
+      
+      /* ---------- Helpers ---------- */
+      const slugify = s => s.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' } [c]));
+      const origin = () => (location.origin && location.origin !== 'null') ? location.origin : 'https://www.example.com';
+      const today = () => {
+        const d = new Date(),
+          p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+      };
+      
+      /* ---------- Markdown post-processing ---------- */
+      function processHTML(md, site) {
+        const doc = new DOMParser().parseFromString(`<body>${marked.parse(md)}</body>`, 'text/html');
+        const body = doc.body;
+        
+        body.querySelectorAll('a[href]').forEach(a => {
+          try {
+            const u = new URL(a.getAttribute('href'), site);
+            if (/^https?:$/.test(u.protocol) && u.origin !== new URL(site).origin) {
+              a.setAttribute('target', '_blank');
+              a.setAttribute('rel', 'nofollow noopener');
+            }
+          } catch (e) {}
+        });
+        
+        body.querySelectorAll('table').forEach(t => {
+          const wrap = doc.createElement('div');
+          wrap.className = 'table-wrap';
+          wrap.setAttribute('role', 'region');
+          wrap.setAttribute('aria-label', 'Scrollable table');
+          wrap.setAttribute('tabindex', '0');
+          t.replaceWith(wrap);
+          wrap.append(t);
+        });
+        
+        const used = new Set(),
+          toc = [];
+        body.querySelectorAll('h2, h3, h4').forEach(h => {
+          let id = h.id || slugify(h.textContent) || 'section',
+            n = 2,
+            base = id;
+          while (used.has(id)) id = `${base}-${n++}`;
+          used.add(id);
+          h.id = id;
+          if (h.tagName === 'H2') toc.push({ id, text: h.textContent.trim() });
+        });
+        return { html: body.innerHTML, toc, words: (body.textContent.match(/\S+/g) || []).length };
+      }
+      
+      /* ---------- Page template ---------- */
+      function buildPage(d) {
+        const { title, desc, slug, site, date, html, toc, words } = d;
+        const year = date.slice(0, 4);
+        const url = `${site}/blogs/${year}/${slug}.html`;
+        const img = w => `https://picsum.photos/seed/blog-${slug}/${w}`;
+        const pretty = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(Date.parse(date + 'T00:00:00Z'));
+        const mins = Math.max(1, Math.round(words / 200));
+        const T = esc(title),
+          D = esc(desc);
+        const ld = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            { '@type': 'BlogPosting', '@id': url + '#post', mainEntityOfPage: url, headline: title, description: desc, image: img('1200/630'), datePublished: date, dateModified: date, inLanguage: 'en', author: { '@type': 'Organization', name: '3NDING Editorial' }, publisher: { '@type': 'Organization', name: '3NDING' } },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: site + '/' },
+                { '@type': 'ListItem', position: 2, name: 'Stories', item: site + '/' },
+                { '@type': 'ListItem', position: 3, name: title }
+              ]
+            }
+          ]
+        }, null, 2).replace(/</g, '\\u003c');
+        const tocHTML = toc.length ? `
+      <nav class="toc" aria-label="Table of contents">
+        <h2>In this post</h2>
+        <ol>
+${toc.map(t => `          <li><a href="#${esc(t.id)}">${esc(t.text)}</a></li>`).join('\n')}
+        </ol>
+      </nav>
+` : '';
+        
+        return `<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- ===== SEO: core ===== -->
+  <title>${T} – 3NDING</title>
+  <meta name="description" content="${D}">
+  <link rel="canonical" href="${url}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="3NDING Editorial">
+  <meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1016" media="(prefers-color-scheme: dark)">
+
+  <!-- ===== SEO: Open Graph / Twitter ===== -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="3NDING">
+  <meta property="og:title" content="${T}">
+  <meta property="og:description" content="${D}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${img('1200/630')}">
+  <meta property="og:image:alt" content="${T}">
+  <meta property="article:published_time" content="${date}T00:00:00Z">
+  <meta property="article:modified_time" content="${date}T00:00:00Z">
+  <meta property="article:author" content="3NDING Editorial">
+  <meta property="article:section" content="Stories">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${T}">
+  <meta name="twitter:description" content="${D}">
+  <meta name="twitter:image" content="${img('1200/630')}">
+
+  <link rel="preconnect" href="https://picsum.photos" crossorigin>
+  <link rel="stylesheet" href="../../css/index.css">
+  <link rel="stylesheet" href="../../css/blog.css">
+
+  <!-- ===== SEO: structured data ===== -->
+  <script type="application/ld+json">
+${ld}
+  <\/script>
+
+  <script>
+    /* Set theme before first paint to avoid a flash */
+    (function() {
+      try {
+        var s = localStorage.getItem('theme');
+        var d = s ? s === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = d ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  <\/script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="3NDING home">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4f46e5" />
+              <stop offset="1" stop-color="#0d9488" />
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="9" fill="url(#g)" />
+          <text x="16" y="23" text-anchor="middle" font-size="28" font-weight="bolder" font-family="Arial, sans-serif" fill="white">&nearr;</text>
+        </svg>
+        3NDING
+      </a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">
+        <svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+        </svg>
+        <svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../">Stories</a></li>
+        <li aria-current="page">${T}</li>
+      </ol>
+    </nav>
+
+    <article itemscope itemtype="https://schema.org/BlogPosting">
+      <header class="article-head">
+        <h1 itemprop="headline">${T}</h1>
+        <p class="lede" itemprop="description">${D}</p>
+        <div class="byline">
+          <span>By <span itemprop="author">3NDING Editorial</span></span>
+          <time datetime="${date}" itemprop="datePublished">${pretty}</time>
+          <span>${mins} min read</span>
+        </div>
+      </header>
+
+      <figure class="hero-img">
+        <img src="${img('1200/675')}" width="1200" height="675" alt="${T}" fetchpriority="high" decoding="async" itemprop="image">
+      </figure>
+${tocHTML}
+      <div class="prose" itemprop="articleBody">
+${html}
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <section>© <span id="year">${year}</span> 3NDING </section>
+      <section class="links">
+        <a href="#">About</a> |
+        <a href="#">Terms</a> |
+        <a href="#">Privacy</a>
+      </section>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var root = document.documentElement;
+      document.getElementById('year').textContent = new Date().getFullYear();
+      document.getElementById('theme').addEventListener('click', function() {
+        var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    })();
+  <\/script>
+</body>
+
+</html>
+`;
+      }
+      
+      /* ---------- Validation ---------- */
+      const setErr = (key, msg) => {
+        $(key + 'Err').textContent = msg || '';
+        f[key].setAttribute('aria-invalid', msg ? 'true' : 'false');
+        return !msg;
+      };
+      const checks = {
+        title() {
+          const v = f.title.value.trim();
+          if (!v) return setErr('title', 'Enter a title.');
+          if (v.length < 3) return setErr('title', 'Title must be at least 3 characters.');
+          if (!slugify(v)) return setErr('title', 'Title needs at least one letter or number.');
+          return setErr('title');
+        },
+        desc() {
+          const v = f.desc.value.trim();
+          if (!v) return setErr('desc', 'Enter a meta description.');
+          if (v.length < 20) return setErr('desc', 'Description is too short (20+ characters).');
+          if (v.length > 160) return setErr('desc', 'Keep the description to 160 characters or fewer.');
+          return setErr('desc');
+        },
+        content() {
+          const v = f.content.value.trim();
+          if (!v) return setErr('content', 'Write some Markdown content.');
+          return setErr('content');
+        }
+      };
+      
+      /* ---------- Events ---------- */
+      f.title.addEventListener('input', () => {
+        $('slug').textContent = slugify(f.title.value) ? slugify(f.title.value) + '.html' : '—';
+        if (f.title.getAttribute('aria-invalid') === 'true') checks.title();
+      });
+      f.desc.addEventListener('input', () => {
+        const n = f.desc.value.trim().length;
+        $('descCount').textContent = `${n} / 160`;
+        $('descCount').style.color = n > 160 ? '#dc2626' : '';
+        if (f.desc.getAttribute('aria-invalid') === 'true') checks.desc();
+      });
+      f.content.addEventListener('input', () => {
+        if (f.content.getAttribute('aria-invalid') === 'true') checks.content();
+      });
+      
+      $('form').addEventListener('submit', e => {
+        e.preventDefault();
+        const ok = [checks.title(), checks.desc(), checks.content()].every(Boolean);
+        if (!ok) { $('form').querySelector('[aria-invalid=true]')?.focus(); return; }
+        if (typeof marked === 'undefined') {
+          setErr('content', 'Markdown library failed to load. Check your connection and retry.');
+          return;
+        }
+        const title = f.title.value.trim(),
+          desc = f.desc.value.trim();
+        const slug = slugify(title),
+          site = origin(),
+          date = today();
+        const { html, toc, words } = processHTML(f.content.value, site);
+        const page = buildPage({ title, desc, slug, site, date, html, toc, words });
+        
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([page], { type: 'text/html;charset=utf-8' }));
+        a.download = `${slug}.html`;
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        
+        $('json').textContent =
+          `{
+  title: ${JSON.stringify(title)},
+  published: "${date}",
+  excerpt: ${JSON.stringify(desc)},
+  link: "blogs/${date.slice(0, 4)}/${slug}.html"
+}`;
+        $('outFile').textContent = `${slug}.html`;
+        $('out').hidden = false;
+        $('toast').textContent = '';
+        $('out').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+      
+      $('clearForm').addEventListener('click', () => {
+        $('form').reset();
+        Object.keys(f).forEach(k => setErr(k));
+        $('slug').textContent = '—';
+        $('descCount').textContent = '0 / 160';
+        $('descCount').style.color = '';
+        $('out').hidden = true;
+        $('json').textContent = '';
+        f.title.focus();
+      });
+      
+      $('copy').addEventListener('click', async () => {
+        const text = $('json').textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (e) {
+          const r = document.createRange();
+          r.selectNodeContents($('json'));
+          const s = getSelection();
+          s.removeAllRanges();
+          s.addRange(r);
+          try { document.execCommand('copy'); } catch (_) {}
+          s.removeAllRanges();
+        }
+        $('toast').textContent = 'Copied!';
+        setTimeout(() => { $('toast').textContent = ''; }, 2000);
+      });
+      
+      $('theme').addEventListener('click', () => {
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+      $('year').textContent = new Date().getFullYear();
+    })();
+  </script>
 </body>
 
 </html>
